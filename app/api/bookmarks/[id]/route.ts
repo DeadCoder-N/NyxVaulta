@@ -1,8 +1,5 @@
 import { createClient } from '@/lib/supabaseServer'
 import { NextResponse } from 'next/server'
-import { Database } from '@/lib/types'
-
-type BookmarkUpdate = Database['public']['Tables']['bookmarks']['Update']
 
 export async function PATCH(
   request: Request,
