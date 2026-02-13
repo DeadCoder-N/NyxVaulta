@@ -1,6 +1,13 @@
 # 🌙 NyxVaulta
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/YOUR_USERNAME/nyxvaulta)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
+[![Supabase](https://img.shields.io/badge/Supabase-Powered-green)](https://supabase.com/)
+
 Your Digital Sanctuary for Bookmarks - A modern, feature-rich bookmark manager built with Next.js 14, Supabase, and Tailwind CSS.
+
+**🚀 [Live Demo](https://your-app.vercel.app)** | **📖 [Deployment Guide](./DEPLOYMENT_GUIDE.md)** | **✅ [Quick Checklist](./DEPLOYMENT_CHECKLIST.md)**
 
 ## 🚀 Tech Stack
 
@@ -220,19 +227,33 @@ Open [http://localhost:3000](http://localhost:3000)
 
 ## 🚀 Deployment
 
-### Vercel Deployment
+### Quick Deploy to Vercel
 
-1. Push code to GitHub
-2. Import project in Vercel
-3. Add environment variables in Vercel dashboard
-4. Deploy
-5. Update Supabase redirect URLs with production URL
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/YOUR_USERNAME/nyxvaulta)
 
-### Post-Deployment
+### Manual Deployment
 
-1. Test Google OAuth with production URL
-2. Open two tabs and verify Realtime sync
-3. Test with multiple Google accounts to verify RLS
+**Total Time**: ~20 minutes
+
+1. **Push to GitHub**
+   ```bash
+   git remote add origin https://github.com/YOUR_USERNAME/nyxvaulta.git
+   git push -u origin main
+   ```
+
+2. **Deploy to Vercel**
+   - Go to [vercel.com](https://vercel.com)
+   - Import your GitHub repository
+   - Add environment variables
+   - Click Deploy
+
+3. **Configure Supabase**
+   - Add production redirect URLs
+   - Update Google OAuth settings
+
+**📖 Full Guide**: See [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md) for detailed step-by-step instructions.
+
+**✅ Quick Reference**: See [DEPLOYMENT_CHECKLIST.md](./DEPLOYMENT_CHECKLIST.md) for a quick checklist.
 
 ## 🧪 Testing Checklist
 
