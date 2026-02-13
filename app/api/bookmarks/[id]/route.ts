@@ -1,5 +1,8 @@
 import { createClient } from '@/lib/supabaseServer'
 import { NextResponse } from 'next/server'
+import { Database } from '@/lib/types'
+
+type BookmarkUpdate = Database['public']['Tables']['bookmarks']['Update']
 
 export async function PATCH(
   request: Request,
@@ -16,15 +19,14 @@ export async function PATCH(
 
     const body = await request.json()
     
-    // Build update object - only include allowed fields
-    const updateData: any = {}
+    const updateData: BookmarkUpdate = {}
     
     if ('title' in body) updateData.title = body.title
     if ('url' in body) updateData.url = body.url
     if ('description' in body) updateData.description = body.description
     if ('is_favorite' in body) updateData.is_favorite = body.is_favorite
     if ('tags' in body) updateData.tags = body.tags
-    if ('folder_id' in body && body.folder_id) updateData.folder_id = body.folder_id
+    if ('folder_id' in body) updateData.folder_id = body.folder_id
 
     const { data, error } = await supabase
       .from('bookmarks')
