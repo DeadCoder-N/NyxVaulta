@@ -19,7 +19,7 @@ export async function PATCH(
 
     const body = await request.json()
     
-    const updateData: BookmarkUpdate = {}
+    const updateData: Record<string, any> = {}
     
     if ('title' in body) updateData.title = body.title
     if ('url' in body) updateData.url = body.url
@@ -30,7 +30,7 @@ export async function PATCH(
 
     const { data, error } = await supabase
       .from('bookmarks')
-      .update(updateData)
+      .update(updateData as any)
       .eq('id', id)
       .eq('user_id', user.id)
       .select()
