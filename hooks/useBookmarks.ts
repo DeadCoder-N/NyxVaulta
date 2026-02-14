@@ -1,3 +1,10 @@
+/**
+ * useBookmarks Custom Hook
+ * 
+ * Manages bookmark data fetching, real-time subscriptions, and CRUD operations.
+ * Provides centralized bookmark state management for the application.
+ */
+
 'use client'
 
 import { createClient } from '@/lib/supabaseClient'
@@ -10,6 +17,10 @@ export function useBookmarks() {
   const [loading, setLoading] = useState(true)
   const supabase = createClient()
 
+  /**
+   * Fetches all bookmarks for the current user
+   * Ordered by creation date (newest first)
+   */
   const fetchBookmarks = async () => {
     try {
       const { data, error } = await supabase
@@ -26,27 +37,38 @@ export function useBookmarks() {
     }
   }
 
+  /**
+   * Set up real-time subscription and initial data fetch
+   * Listens for INSERT, UPDATE, DELETE events on bookmarks table
+   */
   useEffect(() => {
     fetchBookmarks()
 
+    // Subscribe to real-time changes
     const channel = supabase
       .channel('bookmarks')
       .on(
         'postgres_changes',
         {
-          event: '*',
+          event: '*', // Listen to all events (INSERT, UPDATE, DELETE)
           schema: 'public',
           table: 'bookmarks',
         },
-        () => fetchBookmarks()
+        () => fetchBookmarks() // Refetch on any change
       )
       .subscribe()
 
+    // Cleanup subscription on unmount
     return () => {
       supabase.removeChannel(channel)
     }
   }, [])
 
+  /**
+   * Deletes a bookmark by ID
+   * 
+   * @param id - The bookmark ID to delete
+   */
   const deleteBookmark = async (id: string) => {
     try {
       const { error } = await supabase.from('bookmarks').delete().eq('id', id)

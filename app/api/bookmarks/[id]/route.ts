@@ -1,3 +1,11 @@
+/**
+ * Bookmark API Route - PATCH
+ * 
+ * Updates an existing bookmark by ID.
+ * Only updates fields that are provided in the request body.
+ * Ensures user can only update their own bookmarks.
+ */
+
 import { createClient } from '@/lib/supabaseServer'
 import { NextResponse } from 'next/server'
 
@@ -7,6 +15,8 @@ export async function PATCH(
 ) {
   try {
     const { id } = await params
+    
+    // Initialize Supabase client and verify authentication
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
 
@@ -14,8 +24,10 @@ export async function PATCH(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
+    // Parse request body
     const body = await request.json()
     
+    // Build update object with only provided fields
     const updateData: Record<string, any> = {}
     
     if ('title' in body) updateData.title = body.title
@@ -25,6 +37,7 @@ export async function PATCH(
     if ('tags' in body) updateData.tags = body.tags
     if ('folder_id' in body) updateData.folder_id = body.folder_id
 
+    // Update bookmark (only if owned by current user)
     const { data, error } = await supabase
       .from('bookmarks')
       .update(updateData as any)

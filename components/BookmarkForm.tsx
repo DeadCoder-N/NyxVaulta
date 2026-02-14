@@ -1,19 +1,36 @@
+/**
+ * Bookmark Form Component
+ * 
+ * Form for creating new bookmarks with validation.
+ * Handles title, URL, description, and tags input.
+ * Triggers refetch on successful submission.
+ */
+
 'use client'
 
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-export default function BookmarkForm({ onSuccess }: { onSuccess: () => void }) {
+interface BookmarkFormProps {
+  onSuccess: () => void
+}
+
+export default function BookmarkForm({ onSuccess }: BookmarkFormProps) {
+  // Form state
   const [title, setTitle] = useState('')
   const [url, setUrl] = useState('')
   const [description, setDescription] = useState('')
   const [tags, setTags] = useState('')
   const [loading, setLoading] = useState(false)
 
+  /**
+   * Handles form submission and bookmark creation
+   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
+    // Validate required fields
     if (!title.trim() || !url.trim()) {
       toast.error('Please fill in title and URL')
       return
@@ -21,8 +38,11 @@ export default function BookmarkForm({ onSuccess }: { onSuccess: () => void }) {
 
     try {
       setLoading(true)
+      
+      // Parse comma-separated tags
       const tagsArray = tags.split(',').map(t => t.trim()).filter(Boolean)
       
+      // Submit bookmark to API
       const response = await fetch('/api/bookmarks', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -36,6 +56,7 @@ export default function BookmarkForm({ onSuccess }: { onSuccess: () => void }) {
 
       if (!response.ok) throw new Error('Failed to add bookmark')
 
+      // Reset form and trigger success callback
       toast.success('Bookmark added')
       setTitle('')
       setUrl('')
@@ -59,7 +80,9 @@ export default function BookmarkForm({ onSuccess }: { onSuccess: () => void }) {
       <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
         Add New Bookmark
       </h2>
+      
       <div className="space-y-4">
+        {/* Title Input */}
         <input
           type="text"
           placeholder="Title *"
@@ -69,6 +92,8 @@ export default function BookmarkForm({ onSuccess }: { onSuccess: () => void }) {
           disabled={loading}
           required
         />
+        
+        {/* URL Input */}
         <input
           type="url"
           placeholder="https://example.com *"
@@ -78,6 +103,8 @@ export default function BookmarkForm({ onSuccess }: { onSuccess: () => void }) {
           disabled={loading}
           required
         />
+        
+        {/* Description Textarea */}
         <textarea
           placeholder="Description (optional)"
           value={description}
@@ -86,6 +113,8 @@ export default function BookmarkForm({ onSuccess }: { onSuccess: () => void }) {
           disabled={loading}
           rows={3}
         />
+        
+        {/* Tags Input */}
         <input
           type="text"
           placeholder="Tags (comma separated, e.g: work, design, inspiration)"
@@ -95,6 +124,8 @@ export default function BookmarkForm({ onSuccess }: { onSuccess: () => void }) {
           disabled={loading}
         />
       </div>
+      
+      {/* Submit Button */}
       <motion.button 
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}

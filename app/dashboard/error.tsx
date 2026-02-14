@@ -1,3 +1,10 @@
+/**
+ * Dashboard Error Boundary Component
+ * 
+ * Catches and displays errors that occur within the dashboard.
+ * Provides a user-friendly error message and retry functionality.
+ */
+
 'use client'
 
 export default function Error({

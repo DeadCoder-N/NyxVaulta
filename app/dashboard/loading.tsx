@@ -1,3 +1,9 @@
+/**
+ * Dashboard Loading Component
+ * 
+ * Displays a loading spinner while dashboard data is being fetched.
+ */
+
 export default function Loading() {
   return (
     <div className="min-h-screen flex items-center justify-center">
