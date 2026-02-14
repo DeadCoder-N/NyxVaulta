@@ -1,7 +1,13 @@
+/**
+ * Edit Modal Component
+ * Modal for editing existing bookmarks
+ */
+
 'use client'
 
+import { bookmarkApi } from '@/lib/api'
 import { Bookmark } from '@/lib/types'
-import { motion, AnimatePresence } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
@@ -22,12 +28,7 @@ export default function EditModal({ bookmark, isOpen, onClose, onSuccess }: Prop
     e.preventDefault()
     try {
       setLoading(true)
-      const response = await fetch(`/api/bookmarks/${bookmark.id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, url, description }),
-      })
-      if (!response.ok) throw new Error('Failed to update')
+      await bookmarkApi.update(bookmark.id, { title, url, description })
       toast.success('Bookmark updated')
       onSuccess()
       onClose()
